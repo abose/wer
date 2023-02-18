@@ -1,0 +1,20 @@
+name: Publish extension to phcode.dev extension store test2
+
+on:
+  release:
+    types:
+      - edited
+      - published
+      - released
+
+jobs:
+  build-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
+      - name: release details
+        run: |
+          echo "$GITHUB_REF repo=${{github.event.repository.full_name}}"
+          curl https://fec4b104-cdd5-469f-95c3-860cfdb7ac46.mock.pstmn.io/test?pub=${{github.event.repository.full_name}}:$GITHUB_REF
