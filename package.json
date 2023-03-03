@@ -3,7 +3,7 @@
     "title": "All New Extension Store Test Extension.",
     "description": "Test extension for new extension publish workflow.",
     "homepage": "https://github.com/abose/wer",
-    "version": "0.0.1",
+    "version": "0.0.9",
     "author": "Arun",
     "license": "MIT",
     "categories": "demo",
