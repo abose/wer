@@ -17,4 +17,4 @@ jobs:
       - name: release details
         run: |
           echo "$GITHUB_REF repo=${{github.event.repository.full_name}}"
-          curl http://localhost:5000/publishGithubRelease?releaseRef=${{github.event.repository.full_name}}:$GITHUB_REF
+          curl https://publish.phcode.dev/publishGithubRelease?releaseRef=${{github.event.repository.full_name}}:$GITHUB_REF
