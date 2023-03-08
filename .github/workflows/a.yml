@@ -1,11 +1,10 @@
 name: Publish extension to phcode.dev extension store test2
-
+# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
 on:
   release:
     types:
       - edited
       - published
-      - released
 
 jobs:
   build-tasks:
