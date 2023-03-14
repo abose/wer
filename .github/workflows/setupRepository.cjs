@@ -52,10 +52,10 @@ async function initRepo(details){
     repoName = details.repoName;
     console.log("github: ", JSON.stringify(github, null, 4));
     console.log("context: ", JSON.stringify(context, null, 4));
-    // if(!_isValidRepoInitEvent()){
-    //     console.log("Not a valid repo creation event. This task is only meant to be executed at repo creation. Exiting!");
-    //     return;
-    // }
+    if(!_isValidRepoInitEvent()){
+        console.log("Not a valid repo creation event. This task is only meant to be executed at repo creation. Exiting!");
+        return;
+    }
     setupPackageJSON();
     verifyRepoIsPublic();
     
