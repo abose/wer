@@ -58,6 +58,10 @@ async function initRepo(details){
     // }
     setupPackageJSON();
     verifyRepoIsPublic();
+    
+    // cleanup
+    fs.unlinkSync('./.github/workflows/setupRepository.cjs');
+    fs.unlinkSync('./.github/workflows/setupRepository.yml');
 }
 
 module.exports.initRepo = initRepo;
