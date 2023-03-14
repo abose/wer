@@ -33,6 +33,10 @@ function _isValidRepoInitEvent(){
 function setupPackageJSON() {
     const data = fs.readFileSync('./package.json',
             {encoding:'utf8', flag:'r'});
+    data.name = `gh-${org}-${repoName}`;
+    data.description = context.payload.repository.description || "A simple phcode.dev extension/theme.";
+    data.title = repoName;
+    data.license = context.payload.repository.license && context.payload.repository.license.name || "unknown";
     console.log(data);
 }
 
