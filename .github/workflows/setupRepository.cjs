@@ -38,7 +38,10 @@ function setupPackageJSON() {
     data.license = context.payload.repository.license && context.payload.repository.license.name || "unknown";
     data.author = `${context.payload.repository.owner.login}`;
     data.homepage = context.payload.repository.html_url;
-    console.log("data", data);
+    data.version = "0.0.1";
+  
+    fs.writeFileSync('./package.json', JSON.stringify(data, null, 4));
+    console.log("package.json file written successfully\n", data);
 }
 
 async function initRepo(details){
