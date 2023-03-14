@@ -44,6 +44,17 @@ function setupPackageJSON() {
     console.log("package.json file written successfully\n", data);
 }
 
+async function verifyRepoIsPublic() {
+    if(!context.payload.repository.private){
+        console.log("Repository is public, all good.");
+        return;
+    }
+    await createIssue("Repository must be public to publish",
+    `Repository must be public to publish the extension to the extension store.\n
+    If you want to create a private source extension, create another public repo just to create releases an publich the extension without making the source code public.`
+    );
+}
+
 async function initRepo(details){
     github = details.github;
     context = details.context;
@@ -56,6 +67,7 @@ async function initRepo(details){
     //     return;
     // }
     setupPackageJSON();
+    verifyRepoIsPublic();
     //await createIssue("hello", "world");
 }
 
