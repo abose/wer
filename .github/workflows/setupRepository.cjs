@@ -37,7 +37,7 @@ function setupPackageJSON() {
     data.description = context.payload.repository.description || "A simple phcode.dev extension/theme.";
     data.title = repoName;
     data.license = context.payload.repository.license && context.payload.repository.license.name || "unknown";
-    console.log("data", data);
+    console.log("data", data, "sdfsdf");
 }
 
 async function initRepo(details){
