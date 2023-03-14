@@ -1,14 +1,16 @@
 {
-    "name": "abose.wer",
-    "title": "All New Extension Store Test Extension.",
-    "description": "Test extension for new extension publish workflow.",
+    "name": "gh-abose-wer",
+    "title": "wer",
+    "description": "A simple phcode.dev extension/theme.",
     "homepage": "https://github.com/abose/wer",
-    "version": "0.0.9",
-    "author": "Arun",
-    "license": "MIT",
+    "version": "0.0.1",
+    "author": "abose",
+    "license": "MIT License",
     "categories": "demo",
     "keywords": [
-        "phcode", "extension", "demo"
+        "phcode",
+        "extension",
+        "demo"
     ],
     "files": [
         "main.js",
@@ -18,4 +20,3 @@
         "brackets": ">=0.34.0"
     }
 }
-
