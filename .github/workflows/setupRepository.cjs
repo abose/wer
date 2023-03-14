@@ -1,4 +1,12 @@
+/*
+Mainly used to setup repository default pacakge.json contents.
+You may delete this file after repo creation if not already deleted by the template setup scripts.
+*/
+
+const fs = require('fs');
 let github, context, org, repoName;
+// Include fs module
+  
 
 async function createIssue(title, body){
     await github.rest.issues.create({
@@ -10,6 +18,9 @@ async function createIssue(title, body){
 }
 
 function _isValidRepoInitEvent(){
+    // create event is triggered whenever a new branch is created in the repo. so we do a hack that if the master branch
+    // of the repo is created, we consider it as repo creation as master branch is created only on repo create. This
+    // should work all the time on create from template and most of the time on external creation.
     if(context.eventName !== 'create'){
         return false;
     }
@@ -19,16 +30,23 @@ function _isValidRepoInitEvent(){
     return true;
 }
 
+function setupPackageJSON() {
+    const data = fs.readFileSync('./package.json',
+            {encoding:'utf8', flag:'r'});
+    console.log(data);
+}
+
 async function initRepo(details){
     github = details.github;
     context = details.context;
     org = details.org;
     repoName = details.repoName;
-    if(!_isValidRepoInitEvent()){
-        console.log("Not a valid repo creation event. This task is only meant to be executed at repo creation. Exiting!");
-        return;
-    }
-    await createIssue("hello", "world");
+    // if(!_isValidRepoInitEvent()){
+    //     console.log("Not a valid repo creation event. This task is only meant to be executed at repo creation. Exiting!");
+    //     return;
+    // }
+    setupPackageJSON();
+    //await createIssue("hello", "world");
 }
 
 module.exports.initRepo = initRepo;
