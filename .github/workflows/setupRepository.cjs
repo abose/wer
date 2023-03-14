@@ -30,3 +30,5 @@ async function initRepo(details){
     }
     await createIssue("hello", "world");
 }
+
+module.exports.initRepo = initRepo;
