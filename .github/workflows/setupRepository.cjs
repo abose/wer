@@ -31,16 +31,12 @@ function _isValidRepoInitEvent(){
 }
 
 function setupPackageJSON() {
-    let data = fs.readFileSync('./package.json', {encoding:'utf8', flag:'r'});
-    console.log(`gh-${org}-${repoName}`);
+    let data = JSON.parse(fs.readFileSync('./package.json', {encoding:'utf8', flag:'r'}));
     data.name = `gh-${org}-${repoName}`;
-    console.log(context.payload.repository.description || "A simple phcode.dev extension/theme.");
     data.description = context.payload.repository.description || "A simple phcode.dev extension/theme.";
     data.title = repoName;
-    console.log(data.title, repoName);
     data.license = context.payload.repository.license && context.payload.repository.license.name || "unknown";
-    console.log(data.license, context.payload.repository.license && context.payload.repository.license.name || "unknown");
-    console.log("data", data, "sdfsdf");
+    console.log("data", data);
 }
 
 async function initRepo(details){
