@@ -7,16 +7,6 @@ const fs = require('fs');
 let github, context, org, repoName;
 // Include fs module
   
-
-async function createIssue(title, body){
-    await github.rest.issues.create({
-        owner: org,
-        repo: repoName,
-        title: title,
-        body: body
-    });
-}
-
 function _isValidRepoInitEvent(){
     // create event is triggered whenever a new branch is created in the repo. so we do a hack that if the master branch
     // of the repo is created, we consider it as repo creation as master branch is created only on repo create. This
@@ -49,7 +39,7 @@ async function verifyRepoIsPublic() {
         console.log("Repository is public, all good.");
         return;
     }
-    await createIssue("Repository must be public to publish",
+    console.log("Repository must be public to publish",
     `Repository must be public to publish the extension to the extension store.\n
     If you want to create a private source extension, create another public repo just to create releases an publich the extension without making the source code public.`
     );
@@ -68,7 +58,6 @@ async function initRepo(details){
     // }
     setupPackageJSON();
     verifyRepoIsPublic();
-    //await createIssue("hello", "world");
 }
 
 module.exports.initRepo = initRepo;
