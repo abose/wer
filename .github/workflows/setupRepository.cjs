@@ -36,6 +36,8 @@ function setupPackageJSON() {
     data.description = context.payload.repository.description || "A simple phcode.dev extension/theme.";
     data.title = repoName;
     data.license = context.payload.repository.license && context.payload.repository.license.name || "unknown";
+    data.author = `${context.payload.repository.owner.login}`;
+    data.homepage = context.payload.repository.html_url;
     console.log("data", data);
 }
 
