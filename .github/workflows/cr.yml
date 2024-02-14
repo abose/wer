@@ -70,7 +70,7 @@ jobs:
           GLIBC_VER=$(ldd --version | head -n1 | awk '{print $NF}')
           OUTPUT_FILENAME="test-needGLIBC-${GLIBC_VER}.tar.gz"
           mv test.tar.gz "$OUTPUT_FILENAME"
-          echo "::set-output name=filename::$OUTPUT_FILENAME"  # This creates an output variable
+          echo "OUTPUT_FILENAME=$OUTPUT_FILENAME" >> $GITHUB_ENV
           ls
       - name: Upload Release Asset
         id: upload-release-asset 
@@ -78,7 +78,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ${{ steps.prep.outputs.filename }}
-          asset_name: ${{ steps.prep.outputs.filename }}
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ${{ env.FILENAME }}
+          asset_name: ${{ env.FILENAME }}
           asset_content_type: application/gzip
