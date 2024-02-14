@@ -39,6 +39,8 @@ jobs:
               prerelease: true
             })
             console.log(data);
+            core.setOutput('upload_url', data.upload_url);
+            core.setOutput('release_id', data.id);
             return data
 
   build-linux-bins:
