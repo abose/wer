@@ -37,7 +37,7 @@ jobs:
               draft: true,
               prerelease: true
             })
-            core.setOutput('upload_url', response.data.upload_url);
+            core.setOutput('upload_url', data.upload_url);
             return data.id
 
   build-linux-bins:
