@@ -54,7 +54,7 @@ jobs:
     steps:
       - name: Echo create-release outputs
         run: |
-          echo "Release ID: ${{ needs.create-release.outputs.result.id }}"
+          echo "Release ID: ${{ needs.create-release.outputs.result }}"
           echo "Upload URL: ${{ needs.create-release.outputs.result.upload_url }}"
       - uses: actions/checkout@v4
       - name: get Git Tag
