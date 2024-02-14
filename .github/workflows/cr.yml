@@ -37,6 +37,7 @@ jobs:
               draft: true,
               prerelease: true
             })
+            console.log(data);
             core.setOutput('upload_url', data.upload_url);
             return data.id
 
