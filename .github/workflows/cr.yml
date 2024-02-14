@@ -1,3 +1,9 @@
+name: 'generate experimental/dev stage draft GitHub release'
+
+on:
+  push:
+    branches: [ main ]
+
 jobs:
   job1:
     runs-on: ubuntu-latest
