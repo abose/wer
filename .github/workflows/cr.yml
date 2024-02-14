@@ -1,5 +1,4 @@
 name: 'generate experimental/dev stage draft GitHub release'
-
 on:
   push:
     branches: [ main ]
