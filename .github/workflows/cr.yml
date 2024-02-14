@@ -10,7 +10,8 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     outputs:
-      result: ${{ steps.create-release.outputs.result }}
+      release_id: ${{ steps.create-release.outputs.result.release_id }}
+      upload_url: ${{ steps.create-release.outputs.result.upload_url }}
 
     steps:
       - uses: actions/checkout@v4
@@ -54,8 +55,8 @@ jobs:
     steps:
       - name: Echo create-release outputs
         run: |
-          echo "Release ID: ${{ needs.create-release.outputs.result }}"
-          echo "Upload URL: ${{ needs.create-release.outputs.result.upload_url }}"
+          echo "Release ID: ${{ needs.create-release.outputs }}"
+          echo "Upload URL: ${{ needs.create-release.outputs.upload_url }}"
       - uses: actions/checkout@v4
       - name: get Git Tag
         shell: bash
