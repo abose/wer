@@ -40,7 +40,7 @@ jobs:
             console.log(data);
             core.setOutput('upload_url', data.upload_url);
             core.setOutput('release_id', data.id);
-            return data.id
+            return data.upload_url
 
   build-linux-bins:
     needs: [ create-release ]
