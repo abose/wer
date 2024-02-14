@@ -21,7 +21,7 @@ jobs:
       - name: get version
         run: |
           echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
-          echo "GIT_TAG_NAME=dev-app-v$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+          echo "GIT_TAG_NAME=main-app-v$(node -p "require('./package.json').version")" >> $GITHUB_ENV
       - name: create release
         id: create-release
         uses: actions/github-script@v7
@@ -31,7 +31,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: `${process.env.GIT_TAG_NAME}`,
-              target_commitish: 'dev',
+              target_commitish: 'main',
               name: `Phoenix Code Experimental build v${process.env.PACKAGE_VERSION}`,
               body: 'Take a look at the assets to download and install Phoenix Code For your platform.\n\n>UpdateNotification: <replace this text to show a 1 line **Release Notes** to the user in the notification dialogue ![image](https://github.com/abose/phoenix-desktop/assets/5336369/c747898a-29ef-43c7-b74e-dddd5104a56c). Wait for a new pull request in the repo.>',
               draft: true,
