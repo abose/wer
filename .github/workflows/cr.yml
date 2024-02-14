@@ -10,7 +10,8 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     outputs:
-      release_id: ${{ steps.create-release.outputs.result }}
+      release_id: ${{ steps.create-release.outputs.result.release_id }}
+      upload_url: ${{ steps.create-release.outputs.result.upload_url }}
 
     steps:
       - uses: actions/checkout@v4
@@ -38,9 +39,7 @@ jobs:
               prerelease: true
             })
             console.log(data);
-            core.setOutput('upload_url', data.upload_url);
-            core.setOutput('release_id', data.id);
-            return data.upload_url
+            return {release_id: data.id, upload_url: data.upload_url}
 
   build-linux-bins:
     needs: [ create-release ]
