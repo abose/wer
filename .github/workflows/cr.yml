@@ -9,6 +9,8 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
+    outputs:
+      release_id: ${{ steps.create-release.outputs.result }}
 
     steps:
       - uses: actions/checkout@v4
@@ -38,7 +40,7 @@ jobs:
             console.log(data);
             core.setOutput('upload_url', data.upload_url);
             core.setOutput('release_id', data.id);
-            return data
+            return data.id
 
   build-linux-bins:
     needs: [ create-release ]
