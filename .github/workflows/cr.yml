@@ -5,22 +5,90 @@ on:
     branches: [ main ]
 
 jobs:
-  job1:
+  create-release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
-    # Map a step output to a job output
     outputs:
-      output1: ${{ steps.step1.outputs.test }}
-      output2: ${{ steps.step2.outputs.test }}
+      release_id: ${{ steps.create-release.outputs.result }}
+      upload_url: ${{ steps.create-release.outputs.upload_url }}
+
     steps:
-      - id: step1
-        run: echo "test=hello" >> "$GITHUB_OUTPUT"
-      - id: step2
-        run: echo "test=world" >> "$GITHUB_OUTPUT"
-  job2:
-    runs-on: ubuntu-latest
-    needs: job1
+      - uses: actions/checkout@v4
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: get version
+        run: |
+          echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+          echo "GIT_TAG_NAME=main-app-v$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+      - name: create release
+        id: create-release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const os = require("os")
+            const fs = require("fs")
+
+            function setOutput(key, value) {
+              // Temporary hack until core actions library catches up with github new recommendations
+              const output = process.env['GITHUB_OUTPUT']
+              fs.appendFileSync(output, `${key}=${value}${os.EOL}`)
+            }
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `${process.env.GIT_TAG_NAME}`,
+              target_commitish: 'main',
+              name: `Phoenix Code Experimental build v${process.env.PACKAGE_VERSION}`,
+              body: 'Take a look at the assets to download and install Phoenix Code For your platform.\n\n>UpdateNotification: <replace this text to show a 1 line **Release Notes** to the user in the notification dialogue ![image](https://github.com/abose/phoenix-desktop/assets/5336369/c747898a-29ef-43c7-b74e-dddd5104a56c). Wait for a new pull request in the repo.>',
+              draft: true,
+              prerelease: true
+            })
+            console.log(data);
+            setOutput('upload_url', data.upload_url);
+            return data.id
+
+  build-linux-bins:
+    needs: [ create-release ]
+    permissions:
+      contents: write
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ ubuntu-20.04, ubuntu-22.04]
+
+    runs-on: ${{ matrix.platform }}
     steps:
-      - env:
-          OUTPUT1: ${{needs.job1.outputs.output1}}
-          OUTPUT2: ${{needs.job1.outputs.output2}}
-        run: echo "$OUTPUT1 $OUTPUT2"
+      - uses: actions/checkout@v4
+      - name: get Git Tag
+        shell: bash
+        run: echo "GIT_TAG_NAME=dev-app-v$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: GLIBC version
+        run: |
+          ldd --version
+      - name: install frontend dependencies
+        run: |
+          tar -czvf test.tar.gz test
+          GLIBC_VER=$(ldd --version | head -n1 | awk '{print $NF}')
+          OUTPUT_FILENAME="test-needGLIBC-${GLIBC_VER}.tar.gz"
+          mv test.tar.gz "$OUTPUT_FILENAME"
+          echo "OUTPUT_FILENAME=$OUTPUT_FILENAME" >> $GITHUB_ENV
+          ls
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ${{ env.FILENAME }}
+          asset_name: ${{ env.FILENAME }}
+          asset_content_type: application/gzip
