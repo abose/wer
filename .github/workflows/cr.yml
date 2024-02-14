@@ -9,9 +9,6 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    outputs:
-      release_id: ${{ steps.create-release.outputs.result.id }}
-      upload_url: ${{ steps.create-release.outputs.result.upload_url }}
 
     steps:
       - uses: actions/checkout@v4
@@ -39,7 +36,8 @@ jobs:
               prerelease: true
             })
             console.log(data);
-            return data
+            core.setOutput('release_id', data.id);
+            core.setOutput('upload_url', data.upload_url);
 
   build-linux-bins:
     needs: [ create-release ]
@@ -55,7 +53,7 @@ jobs:
     steps:
       - name: Echo create-release outputs
         run: |
-          echo "Release ID: ${{ needs.create-release.outputs }}"
+          echo "Release ID: ${{ needs.create-release.outputs.release_id }}"
           echo "Upload URL: ${{ needs.create-release.outputs.upload_url }}"
       - uses: actions/checkout@v4
       - name: get Git Tag
