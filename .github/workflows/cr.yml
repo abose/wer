@@ -91,6 +91,7 @@ jobs:
         with:
           files: ${{ env.OUTPUT_FILENAME }}
           tag_name: ${{ env.GIT_TAG_NAME }}
+          draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
