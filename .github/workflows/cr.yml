@@ -62,6 +62,11 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
     steps:
+      - name: Debug print upload_url
+        run: |
+          echo "Upload URL: ${{ needs.create-release.outputs.upload_url }}"
+          echo "Upload URL: ${{ needs.create-release.outputs.release_id }}"
+
       - uses: actions/checkout@v4
       - name: get Git Tag
         shell: bash
